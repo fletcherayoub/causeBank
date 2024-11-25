@@ -18,7 +18,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> {
             ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)requests
                     // to enter some endpoint without authentication
-                    .requestMatchers("/api/**").permitAll()
+                    .requestMatchers("/").permitAll()
                     /////////////////////////////////////
 
                     // to deny a endpoint (make it forbidden 403 )
