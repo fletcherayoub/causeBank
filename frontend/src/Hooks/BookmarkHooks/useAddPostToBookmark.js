@@ -9,7 +9,14 @@
 //   const [error, setError] = useState(null);
 //   const { authUser } = useAuthContext();
 
-//   const addPostToBookmark = async (postId) => {
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * Adds a post to the user's bookmarks.
+ *
+ * @param {string} postId - The ID of the post to be bookmarked.
+ *
+ * This function checks if the user is authenticated before proceeding. 
+/******  a83b07af-a2bc-4f6c-8313-335cc2928185  *******/ //   const addPostToBookmark = async (postId) => {
 //     // console.log("postId", postId);
 
 //     if (!authUser) {
