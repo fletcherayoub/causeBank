@@ -1,5 +1,6 @@
 package causebankgrp.causebank.Models;
 
+// 2
 import causebankgrp.causebank.Enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class UserModel {
     private UserRole role;
     private String avatarUrl;
     private String phone;
+    private String passwordHash;
     private Boolean isEmailVerified;
     private Boolean isPhoneVerified;
     private Boolean isActive;

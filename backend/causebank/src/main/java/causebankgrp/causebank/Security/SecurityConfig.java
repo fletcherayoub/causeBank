@@ -1,47 +1,41 @@
 package causebankgrp.causebank.Security;
 
+// 9
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtAuthFilter;
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> {
-            ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)requests
-                    // to enter some endpoint without authentication
-                    .requestMatchers("/api/v1/**").permitAll()
-                    /////////////////////////////////////
+        http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(requests -> requests
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> 
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                    // to deny a endpoint (make it forbidden 403 )
-                    .requestMatchers("/admin").denyAll()
-                    ////////////////////////////////////////////////
+        return http.build();
+    }
 
-                    .anyRequest()).authenticated();
-
-
-
-        });
-        // if you want a form to appear to login uncomment the line below
-        //http.formLogin(Customizer.withDefaults());
-
-        // to disable csrf
-        http.csrf(AbstractHttpConfigurer::disable);
-        /////////////////////////////
-
-        // to make it more secure and hide the token that we receive and the detail of the request
-        http.sessionManagement((session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)));
-
-        http.httpBasic(Customizer.withDefaults());
-        return (SecurityFilterChain)http.build();
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import causebankgrp.causebank.Enums.DonationStatus;
 import causebankgrp.causebank.Enums.TransactionStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
