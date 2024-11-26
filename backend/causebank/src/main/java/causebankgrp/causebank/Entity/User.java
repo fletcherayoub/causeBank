@@ -1,5 +1,6 @@
 package causebankgrp.causebank.Entity;
 
+// 1
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +8,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import causebankgrp.causebank.Enums.UserRole;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -73,4 +76,9 @@ public class User {
     protected void onUpdate() {
         updatedAt = ZonedDateTime.now();
     }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
 }

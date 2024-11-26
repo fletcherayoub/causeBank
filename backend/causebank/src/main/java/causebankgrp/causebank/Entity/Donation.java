@@ -20,7 +20,6 @@ import java.util.UUID;
 public class Donation {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
