@@ -7,8 +7,8 @@ const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { setAuthUser } = useAuthContext();
 
-  const login = async (username, password) => {
-    const success = handleInputErrors(username, password);
+  const login = async (email, password) => {
+    const success = handleInputErrors(email, password);
     if (!success) {
       return;
     }
@@ -19,9 +19,9 @@ const useLogin = () => {
       const headers = { "x-client-type": "web" };
       console.log("Request Headers:", headers);
       const response = await ForumApi.post(
-        "/api/v1/login",
+        "/api/v1/auth/login",
         {
-          username,
+          email,
           password,
         },
         {

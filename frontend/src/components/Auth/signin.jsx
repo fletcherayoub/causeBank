@@ -1,9 +1,24 @@
 // components/Auth/SignIn.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import useLogin from "../../Hooks/AuthHooks/useLogin";
 
 const signin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { login, isLoading } = useLogin();
+
+  console.log("email", email);
+  console.log("password", password);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await login(email, password);
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col md:flex-row">
       {/* Left Section - Sign In Form */}
@@ -19,7 +34,7 @@ const signin = () => {
           </div>
 
           {/* Sign In Form */}
-          <form className="space-y-4 sm:space-y-6">
+          <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-[#333333] mb-1.5 sm:mb-2">
                 Email Address
@@ -28,6 +43,8 @@ const signin = () => {
                 type="email"
                 className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#3767a6] focus:border-transparent outline-none transition-all text-sm sm:text-base"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -39,6 +56,8 @@ const signin = () => {
                 type="password"
                 className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#3767a6] focus:border-transparent outline-none transition-all text-sm sm:text-base"
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -54,8 +73,7 @@ const signin = () => {
               </div>
               <a
                 href="#"
-                className="text-sm font-medium text-[#3767a6] hover:underline"
-              >
+                className="text-sm font-medium text-[#3767a6] hover:underline">
                 Forgot password?
               </a>
             </div>
@@ -65,14 +83,18 @@ const signin = () => {
               whileTap={{ scale: 0.98 }}
               className="w-full bg-gradient-to-r from-[#96b3d9] to-[#3767a6] text-white py-2.5 sm:py-3 rounded-lg font-medium hover:opacity-90 transition-all duration-200 text-sm sm:text-base shadow-md"
               type="submit"
-            >
-              Sign In
+              disabled={isLoading}>
+              {isLoading ? "Signing In..." : "Sign In"}
             </motion.button>
           </form>
 
           <div className="mt-6 sm:mt-8 text-center">
-            <span className="text-gray-600 text-sm sm:text-base">Don't have an account? </span>
-            <Link to="/signupType" className="text-[#3767a6] font-medium hover:underline text-sm sm:text-base">
+            <span className="text-gray-600 text-sm sm:text-base">
+              Don't have an account?{" "}
+            </span>
+            <Link
+              to="/signupType"
+              className="text-[#3767a6] font-medium hover:underline text-sm sm:text-base">
               Sign up
             </Link>
           </div>
@@ -82,7 +104,9 @@ const signin = () => {
       {/* Right Section - Feature Highlights */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#96b3d9] to-[#3767a6] p-8 lg:p-12 items-center justify-center">
         <div className="max-w-md text-white">
-          <h2 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">Join the Movement</h2>
+          <h2 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">
+            Join the Movement
+          </h2>
           <p className="mb-6 lg:mb-8 text-sm lg:text-base">
             CauseBank connects passionate individuals with meaningful causes.
             Together, we can create lasting change in our communities.
@@ -90,18 +114,17 @@ const signin = () => {
 
           <div className="space-y-3 lg:space-y-4">
             {[
-              'Secure and transparent donations',
-              'Real-time impact tracking',
-              'Community of changemakers',
-              '24/7 dedicated support'
+              "Secure and transparent donations",
+              "Real-time impact tracking",
+              "Community of changemakers",
+              "24/7 dedicated support",
             ].map((feature, index) => (
               <div key={index} className="flex items-center gap-2 lg:gap-3">
                 <svg
                   className="w-4 h-4 lg:w-5 lg:h-5 text-white flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                  viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
