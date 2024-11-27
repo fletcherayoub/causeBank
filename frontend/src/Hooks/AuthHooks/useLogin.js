@@ -5,7 +5,7 @@ import ForumApi from "../../DataFetching/DataFetching"; // Adjust the import if 
 
 const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setAuthUser } = useAuthContext();
+  const { setAuthUser, setToken } = useAuthContext(); // Get setAuthUser and setToken from context
 
   const login = async (email, password) => {
     const success = handleInputErrors(email, password);
@@ -31,10 +31,13 @@ const useLogin = () => {
       );
       console.log("headers:", response.headers);
 
-      const data = response.data;
+      const data = response?.data;
 
-      setAuthUser(data);
-      toast.success(`Welcome back, ${data?.username}!`);
+      // Save user data and token to context
+      setAuthUser(data?.data?.user); // Assuming `data.data` contains user info
+      setToken(data?.data?.token); // Assuming `data.data.token` contains the token
+
+      toast.success(`Welcome back, ${data?.data?.firstName || "User"}!`);
     } catch (error) {
       console.error("Login error:", error);
       toast.error(
