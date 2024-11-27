@@ -10,13 +10,19 @@ export const useAuthContext = () => {
 
 // Provider component to manage authentication state
 export const AuthContextProvider = ({ children }) => {
-  // State to store authenticated user
+  // State to store the authentication token
+  const [token, setToken] = useState(() => {
+    // Load token from localStorage, or return null if not available
+    const storedToken = localStorage.getItem("causeBank-token");
+    return storedToken || null;
+  });
+
+  // State to store authenticated user data
   const [authUser, setAuthUser] = useState(() => {
-    // Load user from localStorage or set to null if not available
+    // Load user from localStorage, or return null if not available
     const storedUser = localStorage.getItem("causeBank-user");
     const storedTimestamp = localStorage.getItem("causebank-user-timestamp");
 
-    // Check if the timestamp is valid and within 24 hours
     const now = Date.now();
     const oneDayInMillis = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -34,23 +40,35 @@ export const AuthContextProvider = ({ children }) => {
     }
   });
 
-  // Function to update authUser with the latest user data
+  // Function to update authUser and token with the latest user data
   const updateUserProfile = (userData) => {
     setAuthUser(userData);
+    setToken(userData?.token || null); // Ensure the token is set if available
   };
 
-  // Effect to update localStorage when authUser changes
+  // Effect to update localStorage when authUser or token changes
   useEffect(() => {
     if (authUser) {
       // Store updated authUser and timestamp in localStorage
       localStorage.setItem("causeBank-user", JSON.stringify(authUser));
       localStorage.setItem("causebank-user-timestamp", Date.now());
     }
-  }, [authUser]);
+    if (token) {
+      // Store the token in localStorage
+      localStorage.setItem("causeBank-token", token);
+    }
+  }, [authUser, token]);
 
-  // Provide authUser, setAuthUser, and updateUserProfile to children components
+  // Provide authUser, token, setAuthUser, and updateUserProfile to children components
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser, updateUserProfile }}>
+    <AuthContext.Provider
+      value={{
+        authUser,
+        token,
+        setAuthUser,
+        setToken,
+        updateUserProfile,
+      }}>
       {children}
     </AuthContext.Provider>
   );

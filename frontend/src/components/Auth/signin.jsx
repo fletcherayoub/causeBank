@@ -1,10 +1,10 @@
 // components/Auth/SignIn.jsx
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import useLogin from "../../Hooks/AuthHooks/useLogin";
 
-const signin = () => {
+const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -158,4 +158,4 @@ const signin = () => {
   );
 };
 
-export default signin;
+export default Signin;
