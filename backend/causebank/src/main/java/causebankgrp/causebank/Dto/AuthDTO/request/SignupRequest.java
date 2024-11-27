@@ -1,4 +1,4 @@
-package causebankgrp.causebank.Dto.request;
+package causebankgrp.causebank.Dto.AuthDTO.request;
 
 import causebankgrp.causebank.Enums.UserRole;
 import jakarta.validation.constraints.Email;

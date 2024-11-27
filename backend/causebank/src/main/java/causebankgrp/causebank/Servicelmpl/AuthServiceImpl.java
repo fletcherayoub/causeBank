@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import causebankgrp.causebank.Dto.Response.AuthResponse;
-import causebankgrp.causebank.Dto.Response.UserDTO;
-import causebankgrp.causebank.Dto.request.LoginRequest;
-import causebankgrp.causebank.Dto.request.SignupRequest;
+import causebankgrp.causebank.Dto.AuthDTO.Response.AuthResponse;
+import causebankgrp.causebank.Dto.AuthDTO.Response.UserDTO;
+import causebankgrp.causebank.Dto.AuthDTO.request.LoginRequest;
+import causebankgrp.causebank.Dto.AuthDTO.request.SignupRequest;
 import causebankgrp.causebank.Entity.User;
 import causebankgrp.causebank.Exception.AuthException;
 import causebankgrp.causebank.Repository.UserRepository;

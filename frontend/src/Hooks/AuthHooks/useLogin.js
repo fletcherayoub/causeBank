@@ -37,12 +37,10 @@ const useLogin = () => {
       setAuthUser(data?.data?.user); // Assuming `data.data` contains user info
       setToken(data?.data?.token); // Assuming `data.data.token` contains the token
 
-      toast.success(`Welcome back, ${data?.data?.user?.firstName || "User"}!`);
+      toast.success(`Welcome back, ${data?.data?.user?.lastName || "User"}!`);
     } catch (error) {
       console.error("Login error:", error);
-      toast.error(
-        error.response?.data?.error || "An error occurred during login"
-      );
+      toast.error(error || "An error occurred during login");
     } finally {
       setIsLoading(false);
     }

@@ -1,4 +1,4 @@
-package causebankgrp.causebank.Dto.Response;
+package causebankgrp.causebank.Dto.AuthDTO.Response;
 
 import lombok.Builder;
 import lombok.Data;

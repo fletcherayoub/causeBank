@@ -3,10 +3,10 @@ package causebankgrp.causebank.Controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import causebankgrp.causebank.Dto.Response.ApiResponse;
-import causebankgrp.causebank.Dto.Response.AuthResponse;
-import causebankgrp.causebank.Dto.request.LoginRequest;
-import causebankgrp.causebank.Dto.request.SignupRequest;
+import causebankgrp.causebank.Dto.AuthDTO.Response.ApiResponse;
+import causebankgrp.causebank.Dto.AuthDTO.Response.AuthResponse;
+import causebankgrp.causebank.Dto.AuthDTO.request.LoginRequest;
+import causebankgrp.causebank.Dto.AuthDTO.request.SignupRequest;
 import causebankgrp.causebank.Services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

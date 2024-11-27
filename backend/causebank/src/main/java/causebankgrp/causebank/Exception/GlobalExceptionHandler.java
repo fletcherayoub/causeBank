@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import causebankgrp.causebank.Dto.Response.ApiResponse;
+import causebankgrp.causebank.Dto.AuthDTO.Response.ApiResponse;
 
 import java.util.HashMap;
 import java.util.Map;

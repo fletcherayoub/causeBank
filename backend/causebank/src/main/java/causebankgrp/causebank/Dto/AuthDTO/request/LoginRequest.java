@@ -1,4 +1,4 @@
-package causebankgrp.causebank.Dto.request;
+package causebankgrp.causebank.Dto.AuthDTO.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
