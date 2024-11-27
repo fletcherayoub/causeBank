@@ -37,7 +37,7 @@ const useLogin = () => {
       setAuthUser(data?.data?.user); // Assuming `data.data` contains user info
       setToken(data?.data?.token); // Assuming `data.data.token` contains the token
 
-      toast.success(`Welcome back, ${data?.data?.firstName || "User"}!`);
+      toast.success(`Welcome back, ${data?.data?.user?.firstName || "User"}!`);
     } catch (error) {
       console.error("Login error:", error);
       toast.error(
