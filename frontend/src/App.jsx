@@ -1,22 +1,28 @@
-
-import { useState } from 'react'
-import React, {useEffect, useContext} from 'react';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import './App.css'
-import Signin from './components/Auth/signin';
-import SignupType from './components/Auth/signupType';
+import { useState } from "react";
+import React, { useEffect, useContext } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Signin from "./Components/Auth/Signin";
+import SignupType from "./Components/Auth/SignupType";
+import { useAuthContext } from "./Context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 function App() {
+  const { authUser, token } = useAuthContext();
+  console.log("authUser", authUser);
+  console.log("token", token);
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
       <Router>
         <Routes>
+          {/* <Route path="/" element={< />} /> */}
           <Route path="/signupType" element={<SignupType />} />
-          <Route path='/signin' element={<Signin/>} />
+          <Route path="/signin" element={<Signin />} />
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
