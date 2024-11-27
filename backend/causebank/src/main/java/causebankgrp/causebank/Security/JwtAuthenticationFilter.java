@@ -4,6 +4,7 @@ import causebankgrp.causebank.Entity.User;
 import causebankgrp.causebank.Repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,50 +21,53 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
+        String jwt = null;
 
-        // Check if the Authorization header is missing or does not start with "Bearer "
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        // Check Authorization header first
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+        }
+
+        // If no token in header, check cookies
+        if (jwt == null && request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("JWT".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // If no token found, continue filter chain
+        if (jwt == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extract the JWT token
-        jwt = authHeader.substring(7);
+        // Extract and validate token
+        String userEmail = jwtUtil.extractEmail(jwt);
 
-        // Extract the user email from the token
-        userEmail = jwtUtil.extractEmail(jwt);
-
-        // Check if the email is not null and the user is not already authenticated
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Retrieve the user details from the database
             User user = userRepository.findByEmail(userEmail).orElse(null);
 
-            // Validate the token and user existence
             if (user != null && jwtUtil.validateToken(jwt, user)) {
-                // Create an authentication token
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         user, null, user.getAuthorities()
                 );
 
-                // Set additional authentication details
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // Set the authentication in the security context
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
 
-        // Proceed with the filter chain
         filterChain.doFilter(request, response);
     }
-
 }

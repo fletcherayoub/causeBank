@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import causebankgrp.causebank.Dto.AuthDTO.Response.ApiResponse;
+import causebankgrp.causebank.Exception.Auth_Authorize.AuthException;
 
 import java.util.HashMap;
 import java.util.Map;

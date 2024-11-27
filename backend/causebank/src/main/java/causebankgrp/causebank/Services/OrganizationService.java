@@ -8,9 +8,37 @@ import causebankgrp.causebank.Dto.OrganizationDTO.Response.ApiResponse;
 import causebankgrp.causebank.Dto.OrganizationDTO.Response.OrganizationResponse;
 
 public interface OrganizationService {
+    // Create a new organization for the authenticated user
     ApiResponse<OrganizationResponse> createOrganization(OrganizationRequest request);
+    
+    // Update an existing organization (only by owner or admin)
     ApiResponse<OrganizationResponse> updateOrganization(UUID id, OrganizationRequest request);
+    
+    // Delete an organization (only by owner or admin)
     ApiResponse<Void> deleteOrganization(UUID id);
+    
+    // Get a specific organization (only by owner or admin)
     ApiResponse<OrganizationResponse> getOrganization(UUID id);
+    
+    // Get all organizations for the authenticated user
+    ApiResponse<List<OrganizationResponse>> getUserOrganizations();
+    
+    // Admin-only method to get all organizations
     ApiResponse<List<OrganizationResponse>> getAllOrganizations();
+    
+    // Check if an organization name is already taken
+    boolean isOrganizationNameTaken(String name);
+    
+    // Check if an organization with a specific registration number exists
+    boolean isRegistrationNumberTaken(String registrationNumber);
+    
+    // Verify an organization (admin-only)
+    ApiResponse<OrganizationResponse> verifyOrganization(UUID id);
+    
+    // Get organizations by specific criteria
+    ApiResponse<List<OrganizationResponse>> getOrganizationsByCity(String city);
+    ApiResponse<List<OrganizationResponse>> getOrganizationsByCountry(String country);
+    
+    // Get organizations with specific verification status (admin-only)
+    ApiResponse<List<OrganizationResponse>> getOrganizationsByVerificationStatus(Boolean isVerified);
 }

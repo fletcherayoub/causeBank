@@ -28,4 +28,5 @@ public class OrganizationResponse {
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
     private UUID userId; // ID of the associated user
+    private String userFullName;
 }

@@ -1,4 +1,4 @@
-package causebankgrp.causebank.Exception;
+package causebankgrp.causebank.Exception.Auth_Authorize;
 
 
 // 3

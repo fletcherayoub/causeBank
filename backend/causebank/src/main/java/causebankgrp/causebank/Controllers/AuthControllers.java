@@ -7,6 +7,7 @@ import causebankgrp.causebank.Dto.AuthDTO.Response.ApiResponse;
 import causebankgrp.causebank.Dto.AuthDTO.Response.AuthResponse;
 import causebankgrp.causebank.Dto.AuthDTO.request.LoginRequest;
 import causebankgrp.causebank.Dto.AuthDTO.request.SignupRequest;
+import causebankgrp.causebank.Security.JwtUtil;
 import causebankgrp.causebank.Services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthControllers {
     private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<AuthResponse>> signup(@Valid @RequestBody SignupRequest request) {
@@ -35,17 +37,7 @@ public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody Login
         // Authenticate the user and get the response with the token
         AuthResponse authResponse = authService.login(request);
 
-        // Get the token from the AuthResponse
-        String token = authResponse.getToken();
-
-        // Create a new cookie to store the JWT token
-        Cookie tokenCookie = new Cookie("JWT", token);
-        tokenCookie.setHttpOnly(true); // Ensures that the cookie is not accessible via JavaScript
-        tokenCookie.setSecure(true);   // Ensures that the cookie is only sent over HTTPS
-        tokenCookie.setPath("/");      // Available for the entire app
-        tokenCookie.setMaxAge(3600);  // Token expiration time (1 hour in this case)
-        // tokenCookie.setSameSite("Strict"); // Prevents CSRF attacks
-
+        Cookie tokenCookie = jwtUtil.createTokenCookie(authResponse.getToken()); 
         // Add the cookie to the response
         response.addCookie(tokenCookie);
 
@@ -57,9 +49,10 @@ public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody Login
 }
 
 
-    @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader("Authorization") String token) {
-        authService.logout(token.replace("Bearer ", ""));
-        return ResponseEntity.ok(ApiResponse.success("Logout successful", null));
-    }
+@PostMapping("/logout")
+public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse response) {
+    Cookie logoutCookie = jwtUtil.createLogoutCookie();
+    response.addCookie(logoutCookie);
+    return ResponseEntity.ok(ApiResponse.success("Logout successful", null));
+}
 }
